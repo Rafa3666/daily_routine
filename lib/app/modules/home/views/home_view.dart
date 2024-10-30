@@ -1,3 +1,5 @@
+import 'package:daily_routine/app/models/checkBox_model.dart';
+import 'package:daily_routine/app/widgets/checkBox_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -5,7 +7,9 @@ import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({super.key});
+  HomeView({super.key});
+
+  final CheckBoxModel checkBoxItem = CheckBoxModel(text: "Lavar o carro");
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +26,33 @@ class HomeView extends GetView<HomeController> {
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
       ),
-      body: const Center(
-        child: Text(
-          'HomeView is working',
-          style: TextStyle(fontSize: 20),
-        ),
+      body: Column(
+        children: [
+          Card(
+            elevation: 5,
+            margin: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 25,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CheckboxWidget(
+                    item: checkBoxItem,
+                  ),
+                  Text(
+                    checkBoxItem.text,
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
       drawer: Drawer(
         child: Column(
