@@ -32,10 +32,7 @@ dependencies:
     sdk: flutter
 
   sqflite: ^2.4.0
-<<<<<<< HEAD
-=======
   modal_bottom_sheet: ^3.0.0
->>>>>>> 604dfd9 (Commit)
 
 
   # The following adds the Cupertino Icons font to your application.
