@@ -1,5 +1,4 @@
 import 'package:daily_routine/app/models/checkBox_model.dart';
-import 'package:daily_routine/app/widgets/checkBox_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -32,26 +31,52 @@ class HomeView extends GetView<HomeController> {
             elevation: 5,
             margin: const EdgeInsets.symmetric(
               horizontal: 15,
-              vertical: 25,
+              vertical: 10,
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CheckboxWidget(
-                    item: checkBoxItem,
-                  ),
-                  Text(
-                    checkBoxItem.text,
-                    style: const TextStyle(
-                      fontSize: 20,
+            child: Column(
+              children: <Widget>[
+                Obx(() {
+                  return ListTile(
+                    leading: Checkbox(
+                      value: controller.checkBoxValue.value,
+                      onChanged: (bool? value) {
+                        controller.changeCheckBoxValue(value);
+                      },
                     ),
-                  ),
-                ],
-              ),
+                    title: Text(
+                      "Lavar o carro",
+                      style: TextStyle(
+                        decoration: controller.checkBoxValue.value
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                      ),
+                    ),
+                    subtitle: Text(
+                      "Limpeza geral no celta",
+                      style: TextStyle(
+                        decoration: controller.checkBoxValue.value
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                      ),
+                    ),
+                  );
+                }),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    TextButton(
+                      onPressed: () {},
+                      child: Icon(Icons.edit),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Icon(Icons.delete),
+                    ),
+                  ],
+                )
+              ],
             ),
-          )
+          ),
         ],
       ),
       drawer: Drawer(
@@ -84,7 +109,46 @@ class HomeView extends GetView<HomeController> {
       ),
       floatingActionButton: FloatingActionButton(
         foregroundColor: Colors.white,
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => Scaffold(
+              appBar: AppBar(
+                toolbarHeight: 45,
+                automaticallyImplyLeading: false,
+                title: Text("Add a new task"),
+                centerTitle: true,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    width: 0,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              body: Column(
+                children: <Widget>[
+                  Center(
+                    child: SizedBox(
+                      width: 350,
+                      height: 50,
+                      child: TextField(
+                        textAlign: TextAlign.start,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          hintText: " - Digite o título de sua tarefa",
+                          hintStyle: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
         backgroundColor: Colors.deepPurple,
         child: const Icon(Icons.add),
       ),
