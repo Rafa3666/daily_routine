@@ -1,18 +1,15 @@
+import 'package:daily_routine/app/services/sqlite_service.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  final sqliteService = Get.put(SqliteService());
 
   RxBool checkBoxValue = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
+    sqliteService.initializeDB();
   }
 
   @override
@@ -22,5 +19,9 @@ class HomeController extends GetxController {
 
   changeCheckBoxValue(value) {
     checkBoxValue.value = value;
+  }
+
+  save(trem){
+    print("O trem que foi salvo: $trem");
   }
 }
