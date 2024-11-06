@@ -1,9 +1,9 @@
 class Labor {
-  final int id;
+  final int? id;
   final String title;
   final String subtitle;
 
-  Labor({required this.id, required this.title, required this.subtitle});
+  Labor({this.id, required this.title, required this.subtitle});
 
   Labor.fromMap(Map<String, dynamic> item)
       : id = item["id"],
@@ -11,6 +11,6 @@ class Labor {
         subtitle = item["subtitle"];
 
   Map<String, Object> toMap() {
-    return {"id": id, "title": title, "subtitle": subtitle};
+    return {"title": title, "subtitle": subtitle};
   }
 }

@@ -1,7 +1,5 @@
 class CheckBoxModel {
+  CheckBoxModel({this.checked = false});
 
-  CheckBoxModel({required this.text, this.checked = false});
-  
-  String text;
   bool checked;
 }

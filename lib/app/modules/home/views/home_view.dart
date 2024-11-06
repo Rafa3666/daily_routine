@@ -8,7 +8,7 @@ import '../controllers/home_controller.dart';
 class HomeView extends GetView<HomeController> {
   HomeView({super.key});
 
-  final CheckBoxModel checkBoxItem = CheckBoxModel(text: "Lavar o carro");
+  final CheckBoxModel checkBoxItem = CheckBoxModel();
 
   @override
   Widget build(BuildContext context) {
@@ -25,60 +25,67 @@ class HomeView extends GetView<HomeController> {
           backgroundColor: Colors.deepPurple,
           foregroundColor: Colors.white,
         ),
-        body: Column(
-          children: [
-            Card(
-              elevation: 5,
-              margin: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 10,
-              ),
-              child: Column(
-                children: <Widget>[
-                  Obx(() {
-                    return ListTile(
-                      leading: Checkbox(
-                        value: controller.checkBoxValue.value,
-                        onChanged: (bool? value) {
-                          controller.changeCheckBoxValue(value);
-                        },
-                      ),
-                      title: Text(
-                        "Lavar o carro",
-                        style: TextStyle(
-                          decoration: controller.checkBoxValue.value
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
-                        ),
-                      ),
-                      subtitle: Text(
-                        "Limpeza geral no celta",
-                        style: TextStyle(
-                          decoration: controller.checkBoxValue.value
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
-                        ),
-                      ),
-                    );
-                  }),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+        body: Obx(() {
+          if (controller.labor.isEmpty) {
+            return Center(
+              child: Text("Cabeça da minha pica"),
+            );
+          }
+          return ListView.builder(
+              itemCount: controller.labor.length,
+              itemBuilder: (context, index) {
+                final laborItem = controller.labor[index];
+
+                return Card(
+                  elevation: 5,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 10,
+                  ),
+                  child: Column(
                     children: <Widget>[
-                      TextButton(
-                        onPressed: () {},
-                        child: Icon(Icons.edit),
+                      ListTile(
+                        leading: Checkbox(
+                          value: controller.checkBoxValue.value,
+                          onChanged: (bool? value) {
+                            controller.changeCheckBoxValue(value);
+                          },
+                        ),
+                        title: Text(
+                          laborItem.title,
+                          style: TextStyle(
+                            decoration: controller.checkBoxValue.value
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                          ),
+                        ),
+                        subtitle: Text(
+                          laborItem.subtitle,
+                          style: TextStyle(
+                            decoration: controller.checkBoxValue.value
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                          ),
+                        ),
                       ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Icon(Icons.delete),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          TextButton(
+                            onPressed: () {},
+                            child: Icon(Icons.edit),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Icon(Icons.delete),
+                          ),
+                        ],
                       ),
                     ],
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
+                  ),
+                );
+              });
+        }),
         drawer: Drawer(
           child: Column(
             children: [
@@ -136,9 +143,13 @@ class HomeView extends GetView<HomeController> {
                           height: 50,
                           child: TextField(
                             textAlign: TextAlign.start,
+                            onChanged: (value) {
+                              controller.title.value = value;
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15)),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
                               hintText: " - Digite o título de sua tarefa",
                               hintStyle: TextStyle(
                                 color: Colors.grey,
@@ -152,6 +163,9 @@ class HomeView extends GetView<HomeController> {
                           height: 50,
                           child: TextField(
                             textAlign: TextAlign.start,
+                            onChanged: (value) {
+                              controller.subtitle.value = value;
+                            },
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15)),
@@ -176,7 +190,7 @@ class HomeView extends GetView<HomeController> {
                           height: 50,
                           child: TextButton(
                             onPressed: () {
-                              controller.save("LInguiã");
+                              controller.saveTask();
                             },
                             style: ButtonStyle(
                                 backgroundColor:
