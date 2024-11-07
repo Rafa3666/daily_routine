@@ -150,7 +150,7 @@ class HomeView extends GetView<HomeController> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              hintText: " - Digite o título de sua tarefa",
+                              hintText: "- Enter the title of your task *",
                               hintStyle: TextStyle(
                                 color: Colors.grey,
                               ),
@@ -169,7 +169,7 @@ class HomeView extends GetView<HomeController> {
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15)),
-                              hintText: " - Digite o subtítulo de sua tarefa",
+                              hintText: "- Enter the subtitle of your task",
                               hintStyle: TextStyle(
                                 color: Colors.grey,
                               ),
@@ -177,14 +177,6 @@ class HomeView extends GetView<HomeController> {
                           ),
                         ),
                         SizedBox(height: 15),
-                        // IconButton(
-                        //   onPressed: () {},
-                        //   icon: Icon(
-                        //     Icons.date_range,
-                        //     size: 35,
-                        //     color: Colors.black,
-                        //   ),
-                        // ),
                         SizedBox(
                           width: 350,
                           height: 50,
@@ -203,7 +195,7 @@ class HomeView extends GetView<HomeController> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
