@@ -28,7 +28,7 @@ class HomeView extends GetView<HomeController> {
         body: Obx(() {
           if (controller.labor.isEmpty) {
             return Center(
-              child: Text("Cabeça da minha pica"),
+              child: Text("No tasks to display"),
             );
           }
           return ListView.builder(
@@ -76,7 +76,9 @@ class HomeView extends GetView<HomeController> {
                             child: Icon(Icons.edit),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              controller.deleteLaborItem(laborItem.title);
+                            },
                             child: Icon(Icons.delete),
                           ),
                         ],

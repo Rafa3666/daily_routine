@@ -31,13 +31,14 @@ class SqliteService {
     return queryResult.map((e) => Labor.fromMap(e)).toList();
   }
 
-  Future<void> deleteItem(String id) async {
+  Future<void> deleteItem(String title) async {
     final db = await initializeDB();
-
     try {
-      await db.delete("Labor", where: "id = ?", whereArgs: [id]);
+      await db.delete("Labor", where: "title = ?", whereArgs: [title]);
     } catch (err) {
       debugPrint("Something went wrong when deleting an item: $err");
+    } finally {
+      await db.close();
     }
   }
 }

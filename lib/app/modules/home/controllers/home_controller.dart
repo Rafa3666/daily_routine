@@ -50,6 +50,11 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> deleteLaborItem(title) async {
+    await sqliteService.deleteItem(title);
+    await loadLabor();
+  }
+
   @override
   void onClose() {
     super.onClose();
