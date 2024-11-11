@@ -72,7 +72,9 @@ class HomeView extends GetView<HomeController> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              editTaskModel(context, controller, laborItem);
+                            },
                             child: Icon(Icons.edit),
                           ),
                           TextButton(
@@ -119,91 +121,7 @@ class HomeView extends GetView<HomeController> {
         floatingActionButton: FloatingActionButton(
           foregroundColor: Colors.white,
           onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (context) => Scaffold(
-                appBar: AppBar(
-                  toolbarHeight: 45,
-                  automaticallyImplyLeading: false,
-                  title: Text("Add a new task"),
-                  centerTitle: true,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      width: 0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                body: SingleChildScrollView(
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        SizedBox(height: 15),
-                        SizedBox(
-                          width: 350,
-                          height: 50,
-                          child: TextField(
-                            textAlign: TextAlign.start,
-                            onChanged: (value) {
-                              controller.title.value = value;
-                            },
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              hintText: "- Enter the title of your task *",
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        SizedBox(
-                          width: 350,
-                          height: 50,
-                          child: TextField(
-                            textAlign: TextAlign.start,
-                            onChanged: (value) {
-                              controller.subtitle.value = value;
-                            },
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              hintText: "- Enter the subtitle of your task",
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        SizedBox(
-                          width: 350,
-                          height: 50,
-                          child: TextButton(
-                            onPressed: () {
-                              controller.saveTask();
-                            },
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    WidgetStatePropertyAll(Colors.deepPurple)),
-                            child: Text(
-                              "Save",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            );
+            addTaskModel(context, controller);
           },
           backgroundColor: Colors.deepPurple,
           child: const Icon(
@@ -213,4 +131,180 @@ class HomeView extends GetView<HomeController> {
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniEndFloat);
   }
+}
+
+addTaskModel(context, controller) {
+  return showModalBottomSheet(
+    context: context,
+    builder: (context) => Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 45,
+        automaticallyImplyLeading: false,
+        title: Text("Add a new task"),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            width: 0,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              SizedBox(height: 15),
+              SizedBox(
+                width: 350,
+                height: 50,
+                child: TextField(
+                  textAlign: TextAlign.start,
+                  onChanged: (value) {
+                    controller.title.value = value;
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    hintText: "- Enter the title of your task *",
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 15),
+              SizedBox(
+                width: 350,
+                height: 50,
+                child: TextField(
+                  textAlign: TextAlign.start,
+                  onChanged: (value) {
+                    controller.subtitle.value = value;
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    hintText: "- Enter the subtitle of your task",
+                    hintStyle: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 15),
+              SizedBox(
+                width: 350,
+                height: 50,
+                child: TextButton(
+                  onPressed: () {
+                    controller.saveTask();
+                  },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          WidgetStatePropertyAll(Colors.deepPurple)),
+                  child: Text(
+                    "Save",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+editTaskModel(context, controller, laborItem) {
+  controller.newTitle.value = laborItem.title;
+  controller.newSubtitle.value = laborItem.subtitle;
+  return showModalBottomSheet(
+    context: context,
+    builder: (context) => Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 45,
+        automaticallyImplyLeading: false,
+        title: Text("Update Task"),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            width: 0,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              SizedBox(height: 15),
+              SizedBox(
+                width: 350,
+                height: 50,
+                child: TextField(
+                  textAlign: TextAlign.start,
+                  onChanged: (value) {
+                    controller.newTitle.value = value;
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    hintText: laborItem.title,
+                  ),
+                ),
+              ),
+              SizedBox(height: 15),
+              SizedBox(
+                width: 350,
+                height: 50,
+                child: TextField(
+                  textAlign: TextAlign.start,
+                  onChanged: (value) {
+                    controller.newSubtitle.value = value;
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    hintText: laborItem.subtitle,
+                  ),
+                ),
+              ),
+              SizedBox(height: 15),
+              SizedBox(
+                width: 350,
+                height: 50,
+                child: TextButton(
+                  onPressed: () {
+                    controller.updateLaborItem(
+                      laborItem.id,
+                      controller.newTitle,
+                      controller.newSubtitle,
+                    );
+                  },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          WidgetStatePropertyAll(Colors.deepPurple)),
+                  child: Text(
+                    "Save",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }

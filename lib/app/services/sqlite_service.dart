@@ -31,6 +31,26 @@ class SqliteService {
     return queryResult.map((e) => Labor.fromMap(e)).toList();
   }
 
+  Future<void> updateItem(int id, String newTitle, String newSubtitle) async {
+    final db = await initializeDB();
+    try {
+      await db.update(
+        "Labor",
+        {
+          "title": newTitle,
+          "subtitle": newSubtitle,
+        },
+        where: "id = ?",
+        whereArgs: [id],
+      );
+    } catch (err) {
+      debugPrint("Something went wrong when updating an item: $err");
+    } finally {
+      await db.close();
+    }
+  }
+
+
   Future<void> deleteItem(String title) async {
     final db = await initializeDB();
     try {

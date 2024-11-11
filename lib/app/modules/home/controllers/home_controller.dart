@@ -10,8 +10,11 @@ class HomeController extends GetxController {
 
   var labor = <Labor>[].obs;
 
-  Rx<String> title = "".obs;
-  Rx<String> subtitle = "".obs;
+  RxString title = "".obs;
+  RxString subtitle = "".obs;
+
+  RxString newTitle = "".obs;
+  RxString newSubtitle = "".obs;
 
   @override
   void onInit() {
@@ -53,6 +56,34 @@ class HomeController extends GetxController {
   Future<void> deleteLaborItem(title) async {
     await sqliteService.deleteItem(title);
     await loadLabor();
+  }
+
+  Future<void> updateLaborItem(id, newTitle, newSubtitle) async {
+    if (newTitle.value.isNotEmpty &&
+        RegExp(r'^[\p{L}\p{N}\s!@#$%^&*(),.?":{}|<>;[\]\\/-_+=]*$',
+                unicode: true)
+            .hasMatch(newTitle.value) &&
+        !newTitle.value.startsWith(" ")) {
+      await sqliteService.updateItem(id, newTitle.value, newSubtitle.value);
+      await loadLabor();
+
+      this.newTitle.value = "";
+      this.newSubtitle.value = "";
+
+      Get.back();
+
+      Get.snackbar("Sucess", "Task Updated",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP,
+          margin: EdgeInsets.all(10));
+    } else {
+      Get.snackbar("Error", "A valide title is required.",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.TOP,
+          margin: EdgeInsets.all(10));
+    }
   }
 
   @override
