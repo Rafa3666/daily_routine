@@ -4,9 +4,13 @@ part of 'app_pages.dart';
 abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
+  static const FILTER = _Paths.FILTER;
+  static const FILTER_PENDING = _Paths.FILTER_PENDING;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
+  static const FILTER = '/filter';
+  static const FILTER_PENDING = '/filter-pending';
 }

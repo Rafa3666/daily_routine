@@ -3,7 +3,7 @@ import 'package:daily_routine/app/services/sqlite_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
+class FilterController extends GetxController {
   final sqliteService = Get.put(SqliteService());
 
   RxBool checkBoxValue = false.obs;

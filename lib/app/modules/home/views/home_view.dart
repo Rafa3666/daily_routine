@@ -46,15 +46,15 @@ class HomeView extends GetView<HomeController> {
                     children: <Widget>[
                       ListTile(
                         leading: Checkbox(
-                          value: controller.checkBoxValue.value,
+                          value: laborItem.isCompleted,
                           onChanged: (bool? value) {
-                            controller.changeCheckBoxValue(value);
+                            controller.changeCheckBoxValue(value, laborItem);
                           },
                         ),
                         title: Text(
                           laborItem.title,
                           style: TextStyle(
-                            decoration: controller.checkBoxValue.value
+                            decoration: laborItem.isCompleted
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,
                           ),
@@ -62,7 +62,7 @@ class HomeView extends GetView<HomeController> {
                         subtitle: Text(
                           laborItem.subtitle,
                           style: TextStyle(
-                            decoration: controller.checkBoxValue.value
+                            decoration: laborItem.isCompleted
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,
                           ),
@@ -100,9 +100,21 @@ class HomeView extends GetView<HomeController> {
                 foregroundColor: Colors.white,
               ),
               ListTile(
+                leading: const Icon(Icons.home_filled),
+                title: Text("Home"),
+                onTap: () {
+                  Get.offAllNamed("/home");
+                },
+              ),
+              const Divider(
+                height: 5,
+              ),
+              ListTile(
                 leading: const Icon(Icons.check),
                 title: Text("Completed"),
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed("/filter");
+                },
               ),
               const Divider(
                 height: 5,
@@ -287,6 +299,7 @@ editTaskModel(context, controller, laborItem) {
                       laborItem.id,
                       controller.newTitle,
                       controller.newSubtitle,
+                      laborItem.isCompleted,
                     );
                   },
                   style: ButtonStyle(

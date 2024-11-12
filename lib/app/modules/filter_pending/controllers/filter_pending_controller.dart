@@ -1,9 +1,10 @@
 import 'package:daily_routine/app/models/labor_model.dart';
-import 'package:daily_routine/app/services/sqlite_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
+import '../../../services/sqlite_service.dart';
+
+class FilterPendingController extends GetxController {
   final sqliteService = Get.put(SqliteService());
 
   RxBool checkBoxValue = false.obs;

@@ -11,7 +11,7 @@ class SqliteService {
       join(path, "database.db"),
       onCreate: (database, version) async {
         await database.execute(
-          "CREATE TABLE Labor(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, subtitle TEXT NOT NULL)",
+          "CREATE TABLE Labor(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, subtitle TEXT NOT NULL, isCompleted INTEGER NOT NULL DEFAULT 0)",
         );
       },
       version: 1,
@@ -31,7 +31,8 @@ class SqliteService {
     return queryResult.map((e) => Labor.fromMap(e)).toList();
   }
 
-  Future<void> updateItem(int id, String newTitle, String newSubtitle) async {
+  Future<void> updateItem(
+      int id, String newTitle, String newSubtitle, bool isCompleted) async {
     final db = await initializeDB();
     try {
       await db.update(
@@ -39,6 +40,7 @@ class SqliteService {
         {
           "title": newTitle,
           "subtitle": newSubtitle,
+          "isCompleted": isCompleted ? 1 : 0,
         },
         where: "id = ?",
         whereArgs: [id],
@@ -49,7 +51,6 @@ class SqliteService {
       await db.close();
     }
   }
-
 
   Future<void> deleteItem(String title) async {
     final db = await initializeDB();
