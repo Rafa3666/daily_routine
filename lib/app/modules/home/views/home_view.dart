@@ -1,4 +1,5 @@
 import 'package:daily_routine/app/models/checkBox_model.dart';
+import 'package:daily_routine/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -16,80 +17,103 @@ class HomeView extends GetView<HomeController> {
         appBar: AppBar(
           title: const Text('Daily Routine'),
           centerTitle: true,
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.search),
-            ),
-          ],
           backgroundColor: Colors.deepPurple,
           foregroundColor: Colors.white,
         ),
-        body: Obx(() {
-          if (controller.labor.isEmpty) {
-            return Center(
-              child: Text("No tasks to display"),
-            );
-          }
-          return ListView.builder(
-              itemCount: controller.labor.length,
-              itemBuilder: (context, index) {
-                final laborItem = controller.labor[index];
+        body: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged: (query) {
+                  controller.searchQuery.value = query;
+                },
+                decoration: InputDecoration(
+                  labelText: 'Search tasks',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  prefixIcon: Icon(Icons.search),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Obx(() {
+                final filteredLabor = controller.labor
+                    .where((laborItem) => laborItem.title
+                        .toLowerCase()
+                        .contains(controller.searchQuery.value.toLowerCase()))
+                    .toList();
 
-                return Card(
-                  elevation: 5,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 10,
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        leading: Checkbox(
-                          value: laborItem.isCompleted,
-                          onChanged: (bool? value) {
-                            controller.changeCheckBoxValue(value, laborItem);
-                          },
+                if (controller.labor.isEmpty) {
+                  return Center(
+                    child: Text("No tasks to display"),
+                  );
+                }
+                return ListView.builder(
+                    itemCount: filteredLabor.length,
+                    itemBuilder: (context, index) {
+                      final laborItem = filteredLabor[index];
+
+                      return Card(
+                        elevation: 5,
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 10,
                         ),
-                        title: Text(
-                          laborItem.title,
-                          style: TextStyle(
-                            decoration: laborItem.isCompleted
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none,
-                          ),
+                        child: Column(
+                          children: <Widget>[
+                            ListTile(
+                              leading: Checkbox(
+                                value: laborItem.isCompleted,
+                                onChanged: (bool? value) {
+                                  controller.changeCheckBoxValue(
+                                      value, laborItem);
+                                },
+                              ),
+                              title: Text(
+                                laborItem.title,
+                                style: TextStyle(
+                                  decoration: laborItem.isCompleted
+                                      ? TextDecoration.lineThrough
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                              subtitle: Text(
+                                laborItem.subtitle,
+                                style: TextStyle(
+                                  decoration: laborItem.isCompleted
+                                      ? TextDecoration.lineThrough
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    editTaskModel(
+                                        context, controller, laborItem);
+                                  },
+                                  child: Icon(Icons.edit),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    controller.deleteLaborItem(laborItem.id);
+                                  },
+                                  child: Icon(Icons.delete),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        subtitle: Text(
-                          laborItem.subtitle,
-                          style: TextStyle(
-                            decoration: laborItem.isCompleted
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              editTaskModel(context, controller, laborItem);
-                            },
-                            child: Icon(Icons.edit),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              controller.deleteLaborItem(laborItem.title);
-                            },
-                            child: Icon(Icons.delete),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              });
-        }),
+                      );
+                    });
+              }),
+            ),
+          ],
+        ),
         drawer: Drawer(
           child: Column(
             children: [
@@ -103,7 +127,7 @@ class HomeView extends GetView<HomeController> {
                 leading: const Icon(Icons.home_filled),
                 title: Text("Home"),
                 onTap: () {
-                  Get.offAllNamed("/home");
+                  Get.offAllNamed(Routes.HOME);
                 },
               ),
               const Divider(
@@ -113,7 +137,7 @@ class HomeView extends GetView<HomeController> {
                 leading: const Icon(Icons.check),
                 title: Text("Completed"),
                 onTap: () {
-                  Get.toNamed("/filter");
+                  Get.toNamed(Routes.FILTER);
                 },
               ),
               const Divider(
@@ -122,7 +146,9 @@ class HomeView extends GetView<HomeController> {
               ListTile(
                 leading: const Icon(Icons.pending),
                 title: Text("Pending"),
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(Routes.FILTER_PENDING);
+                },
               ),
               const Divider(
                 height: 5,

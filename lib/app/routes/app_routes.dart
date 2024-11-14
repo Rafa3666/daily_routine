@@ -6,6 +6,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const FILTER = _Paths.FILTER;
   static const FILTER_PENDING = _Paths.FILTER_PENDING;
+  static const SPLASH_SCREEN = _Paths.SPLASH_SCREEN;
 }
 
 abstract class _Paths {
@@ -13,4 +14,5 @@ abstract class _Paths {
   static const HOME = '/home';
   static const FILTER = '/filter';
   static const FILTER_PENDING = '/filter-pending';
+  static const SPLASH_SCREEN = '/splash-screen';
 }

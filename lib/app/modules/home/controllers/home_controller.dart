@@ -16,11 +16,17 @@ class HomeController extends GetxController {
   RxString newTitle = "".obs;
   RxString newSubtitle = "".obs;
 
+  RxString searchQuery = "".obs;
+
   @override
   void onInit() {
     super.onInit();
     sqliteService.initializeDB();
     loadLabor();
+  }
+
+  void updateSearchQuery(String query) {
+    searchQuery.value = query;
   }
 
   Future<void> saveTask() async {
@@ -53,8 +59,8 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> deleteLaborItem(title) async {
-    await sqliteService.deleteItem(title);
+  Future<void> deleteLaborItem(id) async {
+    await sqliteService.deleteItem(id);
     await loadLabor();
   }
 

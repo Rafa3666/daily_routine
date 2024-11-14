@@ -1,123 +1,33 @@
 import 'package:daily_routine/app/models/labor_model.dart';
+import 'package:daily_routine/app/modules/home/controllers/home_controller.dart';
 import 'package:daily_routine/app/services/sqlite_service.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FilterController extends GetxController {
   final sqliteService = Get.put(SqliteService());
-
-  RxBool checkBoxValue = false.obs;
-
-  var labor = <Labor>[].obs;
-
-  RxString title = "".obs;
-  RxString subtitle = "".obs;
-
-  RxString newTitle = "".obs;
-  RxString newSubtitle = "".obs;
+  final HomeController homeController = Get.find<HomeController>();
 
   @override
   void onInit() {
     super.onInit();
-    sqliteService.initializeDB();
     loadLabor();
   }
 
+  List<Labor> get labor => homeController.labor;
+
   Future<void> saveTask() async {
-    if (title.value.isNotEmpty &&
-        RegExp(r'^[\p{L}\p{N}\s!@#$%^&*(),.?":{}|<>;[\]\\/-_+=]*$',
-                unicode: true)
-            .hasMatch(title.value) &&
-        !title.value.startsWith(" ")) {
-      Labor newLabor = Labor(
-        title: title.value,
-        subtitle: subtitle.value,
-      );
-
-      await sqliteService.createItem(newLabor);
-      await loadLabor();
-
-      Get.back();
-
-      Get.snackbar("Sucess", "Task Saved",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.TOP,
-          margin: EdgeInsets.all(10));
-    } else {
-      Get.snackbar("Error", "A valide title is required.",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.TOP,
-          margin: EdgeInsets.all(10));
-    }
+    await homeController.saveTask();
   }
 
-  Future<void> deleteLaborItem(title) async {
-    await sqliteService.deleteItem(title);
-    await loadLabor();
-  }
-
-  Future<void> updateLaborItem(
-    id,
-    newTitle,
-    newSubtitle,
-    isCompleted,
-  ) async {
-    if (newTitle.value.isNotEmpty &&
-        RegExp(r'^[\p{L}\p{N}\s!@#$%^&*(),.?":{}|<>;[\]\\/-_+=]*$',
-                unicode: true)
-            .hasMatch(newTitle.value) &&
-        !newTitle.value.startsWith(" ")) {
-      await sqliteService.updateItem(
-        id,
-        newTitle.value,
-        newSubtitle.value,
-        isCompleted,
-      );
-      await loadLabor();
-
-      this.newTitle.value = "";
-      this.newSubtitle.value = "";
-
-      Get.back();
-
-      Get.snackbar("Sucess", "Task Updated",
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.TOP,
-          margin: EdgeInsets.all(10));
-    } else {
-      Get.snackbar("Error", "A valide title is required.",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.TOP,
-          margin: EdgeInsets.all(10));
-    }
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
+  Future<void> deleteLaborItem(id) async {
+    await homeController.deleteLaborItem(id);
   }
 
   void changeCheckBoxValue(bool? value, Labor laborItem) {
-    laborItem.isCompleted = value ?? false;
-    int index = labor.indexWhere((item) => item.id == laborItem.id);
-    if (index != -1) {
-      labor[index] = laborItem;
-    }
-
-    sqliteService.updateItem(
-      laborItem.id!,
-      laborItem.title,
-      laborItem.subtitle,
-      laborItem.isCompleted,
-    );
+    homeController.changeCheckBoxValue(value, laborItem);
   }
 
-  loadLabor() async {
-    final data = await sqliteService.getItems();
-    labor.value = data;
+  Future<void> loadLabor() async {
+    await homeController.loadLabor();
   }
 }

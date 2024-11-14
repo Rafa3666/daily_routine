@@ -17,8 +17,9 @@ class Labor {
         subtitle = item["subtitle"],
         isCompleted = item["isCompleted"] == 1;
 
-  Map<String, Object> toMap() {
+  Map<String, dynamic> toMap() {
     return {
+      "id": id,
       "title": title,
       "subtitle": subtitle,
       "isCompleted": isCompleted ? 1 : 0,

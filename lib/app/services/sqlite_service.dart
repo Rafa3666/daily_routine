@@ -11,7 +11,7 @@ class SqliteService {
       join(path, "database.db"),
       onCreate: (database, version) async {
         await database.execute(
-          "CREATE TABLE Labor(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, subtitle TEXT NOT NULL, isCompleted INTEGER NOT NULL DEFAULT 0)",
+          "CREATE TABLE Labor(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, subtitle TEXT NOT NULL, isCompleted INTEGER NOT NULL DEFAULT 0)",
         );
       },
       version: 1,
@@ -52,10 +52,10 @@ class SqliteService {
     }
   }
 
-  Future<void> deleteItem(String title) async {
+  Future<void> deleteItem(int id) async {
     final db = await initializeDB();
     try {
-      await db.delete("Labor", where: "title = ?", whereArgs: [title]);
+      await db.delete("Labor", where: "id = ?", whereArgs: [id]);
     } catch (err) {
       debugPrint("Something went wrong when deleting an item: $err");
     } finally {
