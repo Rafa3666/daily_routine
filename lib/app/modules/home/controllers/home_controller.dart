@@ -18,15 +18,16 @@ class HomeController extends GetxController {
 
   RxString searchQuery = "".obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    sqliteService.initializeDB();
-    loadLabor();
-  }
+  RxBool isLoading = true.obs;
 
-  void updateSearchQuery(String query) {
-    searchQuery.value = query;
+  @override
+  void onInit() async {
+    super.onInit();
+    await sqliteService.initializeDB();
+    await loadLabor();
+
+    await Future.delayed(Duration(seconds: 5));
+    isLoading.value = false;
   }
 
   Future<void> saveTask() async {

@@ -1,4 +1,4 @@
-import 'package:daily_routine/app/routes/app_pages.dart';
+import 'package:daily_routine/app/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -79,48 +79,7 @@ class FilterView extends GetView<FilterController> {
               );
             });
       }),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            AppBar(
-              title: Text("List Filter"),
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.deepPurple,
-              foregroundColor: Colors.white,
-            ),
-            ListTile(
-              leading: const Icon(Icons.home_filled),
-              title: Text("Home"),
-              onTap: () {
-                Get.offAllNamed(Routes.HOME);
-              },
-            ),
-            const Divider(
-              height: 5,
-            ),
-            ListTile(
-              leading: const Icon(Icons.check),
-              title: Text("Completed"),
-              onTap: () {
-                Get.toNamed(Routes.FILTER);
-              },
-            ),
-            const Divider(
-              height: 5,
-            ),
-            ListTile(
-              leading: const Icon(Icons.pending),
-              title: Text("Pending"),
-              onTap: () {
-                Get.toNamed("/filter-pending");
-              },
-            ),
-            const Divider(
-              height: 5,
-            ),
-          ],
-        ),
-      ),
+      drawer: DrawerWidget(),
     );
   }
 }

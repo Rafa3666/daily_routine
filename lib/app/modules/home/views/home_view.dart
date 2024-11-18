@@ -1,5 +1,6 @@
 import 'package:daily_routine/app/models/checkBox_model.dart';
-import 'package:daily_routine/app/routes/app_pages.dart';
+import 'package:daily_routine/app/modules/home/shimmer/home_shimmer.dart';
+import 'package:daily_routine/app/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -39,6 +40,9 @@ class HomeView extends GetView<HomeController> {
             ),
             Expanded(
               child: Obx(() {
+                if (controller.isLoading.value) {
+                  return HomeShimmer();
+                }
                 final filteredLabor = controller.labor
                     .where((laborItem) => laborItem.title
                         .toLowerCase()
@@ -114,48 +118,7 @@ class HomeView extends GetView<HomeController> {
             ),
           ],
         ),
-        drawer: Drawer(
-          child: Column(
-            children: [
-              AppBar(
-                title: Text("List Filter"),
-                automaticallyImplyLeading: false,
-                backgroundColor: Colors.deepPurple,
-                foregroundColor: Colors.white,
-              ),
-              ListTile(
-                leading: const Icon(Icons.home_filled),
-                title: Text("Home"),
-                onTap: () {
-                  Get.offAllNamed(Routes.HOME);
-                },
-              ),
-              const Divider(
-                height: 5,
-              ),
-              ListTile(
-                leading: const Icon(Icons.check),
-                title: Text("Completed"),
-                onTap: () {
-                  Get.toNamed(Routes.FILTER);
-                },
-              ),
-              const Divider(
-                height: 5,
-              ),
-              ListTile(
-                leading: const Icon(Icons.pending),
-                title: Text("Pending"),
-                onTap: () {
-                  Get.toNamed(Routes.FILTER_PENDING);
-                },
-              ),
-              const Divider(
-                height: 5,
-              ),
-            ],
-          ),
-        ),
+        drawer: DrawerWidget(),
         floatingActionButton: FloatingActionButton(
           foregroundColor: Colors.white,
           onPressed: () {

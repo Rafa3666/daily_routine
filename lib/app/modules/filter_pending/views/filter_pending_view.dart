@@ -1,3 +1,4 @@
+import 'package:daily_routine/app/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -78,48 +79,7 @@ class FilterPendingView extends GetView<FilterPendingController> {
               );
             });
       }),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            AppBar(
-              title: Text("List Filter"),
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.deepPurple,
-              foregroundColor: Colors.white,
-            ),
-            ListTile(
-              leading: const Icon(Icons.home_filled),
-              title: Text("Home"),
-              onTap: () {
-                Get.offAllNamed("/home");
-              },
-            ),
-            const Divider(
-              height: 5,
-            ),
-            ListTile(
-              leading: const Icon(Icons.check),
-              title: Text("Completed"),
-              onTap: () {
-                Get.toNamed("/filter");
-              },
-            ),
-            const Divider(
-              height: 5,
-            ),
-            ListTile(
-              leading: const Icon(Icons.pending),
-              title: Text("Pending"),
-              onTap: () {
-                Get.toNamed("/filter-pending");
-              },
-            ),
-            const Divider(
-              height: 5,
-            ),
-          ],
-        ),
-      ),
+      drawer: DrawerWidget(),
     );
   }
 }
