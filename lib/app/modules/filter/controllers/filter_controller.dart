@@ -5,12 +5,15 @@ import 'package:get/get.dart';
 
 class FilterController extends GetxController {
   final sqliteService = Get.put(SqliteService());
-  final HomeController homeController = Get.find<HomeController>();
+  final HomeController homeController = Get.put(HomeController());
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     loadLabor();
+
+    await Future.delayed(Duration(seconds: 3));
+    homeController.isLoading.value = false;
   }
 
   List<Labor> get labor => homeController.labor;
@@ -28,6 +31,7 @@ class FilterController extends GetxController {
   }
 
   Future<void> loadLabor() async {
+    homeController.isLoading.value = true;
     await homeController.loadLabor();
   }
 }

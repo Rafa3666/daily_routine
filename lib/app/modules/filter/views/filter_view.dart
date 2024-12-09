@@ -1,3 +1,6 @@
+import 'package:daily_routine/app/modules/home/shimmer/home_shimmer.dart';
+import 'package:daily_routine/app/routes/app_pages.dart';
+import 'package:daily_routine/app/widgets/appbar_widget.dart';
 import 'package:daily_routine/app/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -11,19 +14,28 @@ class FilterView extends GetView<FilterController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppbarWidget(
+        appBar: AppBar(),
         title: const Text('Completed Tasks'),
-        centerTitle: true,
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Get.offAllNamed(Routes.HOME);
+          },
+        ),
       ),
-      body: Obx(() {
-        if (controller.labor.where((item) => item.isCompleted).isEmpty) {
-          return Center(
-            child: Text("No completed tasks to display"),
-          );
-        }
-        return ListView.builder(
+      endDrawer: DrawerWidget(),
+      body: Obx(
+        () {
+          if (controller.homeController.isLoading.value) {
+            return HomeShimmer();
+          }
+          if (controller.labor.where((item) => item.isCompleted).isEmpty) {
+            return Center(
+              child: Text("No completed tasks to display"),
+            );
+          }
+          return ListView.builder(
             itemCount:
                 controller.labor.where((item) => item.isCompleted).length,
             itemBuilder: (context, index) {
@@ -77,9 +89,10 @@ class FilterView extends GetView<FilterController> {
                   ],
                 ),
               );
-            });
-      }),
-      drawer: DrawerWidget(),
+            },
+          );
+        },
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:daily_routine/app/models/checkBox_model.dart';
 import 'package:daily_routine/app/modules/home/shimmer/home_shimmer.dart';
+import 'package:daily_routine/app/widgets/appbar_widget.dart';
 import 'package:daily_routine/app/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +16,11 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Daily Routine'),
-          centerTitle: true,
-          backgroundColor: Colors.deepPurple,
-          foregroundColor: Colors.white,
+        appBar: AppbarWidget(
+          appBar: AppBar(),
+          title: Text('Daily Routine'),
         ),
+        endDrawer: DrawerWidget(),
         body: Column(
           children: <Widget>[
             Padding(
@@ -118,7 +118,6 @@ class HomeView extends GetView<HomeController> {
             ),
           ],
         ),
-        drawer: DrawerWidget(),
         floatingActionButton: FloatingActionButton(
           foregroundColor: Colors.white,
           onPressed: () {

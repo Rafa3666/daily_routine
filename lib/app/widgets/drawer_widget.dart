@@ -10,12 +10,6 @@ class DrawerWidget extends StatelessWidget {
     return Drawer(
       child: Column(
         children: [
-          AppBar(
-            title: Text("List Filter"),
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.deepPurple,
-            foregroundColor: Colors.white,
-          ),
           ListTile(
             leading: const Icon(Icons.home_filled),
             title: Text("Home"),

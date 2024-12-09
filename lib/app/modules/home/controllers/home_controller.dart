@@ -26,7 +26,7 @@ class HomeController extends GetxController {
     await sqliteService.initializeDB();
     await loadLabor();
 
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 3));
     isLoading.value = false;
   }
 

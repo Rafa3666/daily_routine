@@ -9,7 +9,6 @@ class SplashScreenView extends GetView<SplashScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.startTimer();
     return Scaffold(
       body: const Center(
         child: Column(
